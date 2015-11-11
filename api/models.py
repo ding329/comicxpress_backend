@@ -24,7 +24,7 @@ this is the model for the catalog, holds most of the information for the applica
 	""" 
 	name = models.CharField(max_length=50, blank=False)
 	price = models.CharField(max_length=10, blank=False)
-	catalogID = models.CharField(max_length=7, blank=False)
+	catalogId = models.CharField(max_length=7, blank=False)
         itemId = models.CharField(max_length=11, blank=False, unique=True)
         discountCode = models.CharField(max_length=3, blank=False)
 	categoryCode = models.CharField(max_length=3, blank=False)
