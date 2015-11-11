@@ -18,3 +18,8 @@ class previewselectionsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=previewselections
 		fields=('id', 'name')
+
+class userSerializer(serializers.ModelSerializer):
+	class Meta:
+		model= user
+		fields = ('id', 'username', 'storeName', 'email')
