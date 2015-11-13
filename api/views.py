@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import *
 
 # Create your views here
 	
@@ -14,6 +14,13 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+def home(request):
+  	"""
+  	Send requests to / to the ember.js clientside app  """
+  
+  	return render_to_response('index.html',
+                {}, RequestContext(request))
 
 class catalogList(APIView):
 	def get(self, request, format=None):
