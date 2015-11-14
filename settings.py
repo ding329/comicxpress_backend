@@ -89,6 +89,10 @@ REST_FRAMEWORK = {
     ]
 }
 
+STATICFILES_DIRS = (
+    '/var/www/comicxpress_backend/static/',
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
