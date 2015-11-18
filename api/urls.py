@@ -15,7 +15,9 @@ urlpatterns = [
     url(r'^', include(router.urls)),
 
     #class-based view approach
-    #url(r'^$', views.api_root), #needed if you use all class-based views and want them to show up in the landing page for the browsable api
-    url(r'^order/$', views.catalogList.as_view(), name='catalog-list'),
-    url(r'^monthlyorder/$', views.monthlyorderList.as_view(), name='monthlyorder-list'),
+ #   url(r'^$', views.api_root), #needed if you use all class-based views and want them to show up in the landing page for the browsable api
+ #   url(r'^orders/$', views.catalogList.as_view(), name='catalog-list'),
+    url(r'^monthlyorders/$', views.monthlyorderList.as_view(), name='monthlyorder-list'),
+    url(r'^catalogs/$', views.catalogList.as_view(), name='catalog-list'),
+    url(r'^previewselections/$', views.previewselectionsList.as_view(), name='previewselections-list'),
 ]

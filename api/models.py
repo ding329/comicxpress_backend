@@ -45,7 +45,7 @@ class monthlyorderAdmin(admin.ModelAdmin):
 	list_display = ('name', 'qty')
 
 class previewselections(models.Model):
-	name=models.CharField(max_length=7, blank=False)
+	name = models.CharField(max_length=7, blank=False)
 
 class previewselectionsAdmin(admin.ModelAdmin):
 	list_display = ('name',)

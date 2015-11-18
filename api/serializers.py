@@ -7,7 +7,7 @@ from comicxpress_backend.api.models import *
 class catalogSerializer(serializers.ModelSerializer):
 	class Meta:
 		model= catalog
-		fields=('id', 'name', 'price','catalogId', 'itemId', 'discountCode', 'categoryCode', 'orderDate', 'orderDate', 'qty', 'page', 'reoccuring')
+		fields=('id', 'name', 'price','catalogId', 'itemId', 'discountCode', 'categoryCode', 'orderDate', 'sellDate', 'qty', 'page', 'reoccuring')
 
 class monthlyorderSerializer(serializers.ModelSerializer):
 	class Meta:
