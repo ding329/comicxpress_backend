@@ -164,8 +164,8 @@ define('project2/components/place-order', ['exports', 'ember'], function (export
 		isComic: (function () {
 			var catalog = this.get('catalog');
 			//	console.log('iscomic::' + catalog.get('name') + " " + catalog.get('categoryCode'));
-			return catalog.get('categoryCode') == '1';
-		}).property('categoryCode'),
+			return catalog.get('categorycode') == '1';
+		}).property('categorycode'),
 		actions: {
 			addItem: function addItem() {
 				var catalog = this.get('catalog');
@@ -234,7 +234,7 @@ define('project2/controllers/editcart', ['exports', 'ember', 'ember-validations'
 				var title = orderController.get('selectName.name') + "_Order";
 				//forEach(monthlyItem, 0, reoccuring)
 				cart.forEach(function (item) {
-					orderForm = orderForm + item.get('catalogId') + "\t " + item.get('itemId') + "\t " + item.get('discountCode') + "\t " + item.get('qty') + "\t" + item.get('name') + "\t " + item.get('price') + '\t ' + item.get('total') + "\r\n";
+					orderForm = orderForm + item.get('catalogid') + "\t " + item.get('itemid') + "\t " + item.get('discountcode') + "\t " + item.get('qty') + "\t" + item.get('name') + "\t " + item.get('price') + '\t ' + item.get('total') + "\r\n";
 				});
 				var blob = new Blob([orderForm], { type: "text/plain;charset=utf-8" });
 				saveAs(blob, title);
@@ -331,10 +331,10 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 
 			var rx2 = new RegExp(regexSearch, 'gi');
 
-			var entries = this.get('content').sortBy('itemId');
+			var entries = this.get('content').sortBy('itemid');
 			console.log("entries is::" + entries);
 			return entries.filter(function (entry) {
-				return entry.get('categoryCode').match(rx) && entry.get('name').match(rx2);
+				return entry.get('categorycode').match(rx) && entry.get('name').match(rx2);
 			});
 		}).property('SearchField', 'content', 'chCom', 'chMag', 'chGraphic', 'chNovel', 'chGame', 'chCard', 'chComNoveties', 'chNoveties', 'chApparel', 'chToy', 'chScard', 'chScomic', 'chRetail', 'chDiamond', 'chPoster', 'chVideo'),
 
@@ -371,9 +371,9 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 								id: item.get('id'),
 								name: item.get('name'),
 								price: item.get('price'),
-								catalogId: item.get('catalogId'),
-								itemId: item.get('itemId'),
-								discountCode: item.get('discountCode'),
+								catalogid: item.get('catalogid'),
+								itemid: item.get('itemid'),
+								discountcode: item.get('discountcode'),
 								qty: Math.floor(item.get('qty'))
 							});
 							cart.pushObject(tmp);
@@ -391,7 +391,7 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 							var monthlyOrder = monthlyController.get('monthlyorder');
 
 							var ptr = item.get('name').search("#"); //will need the position of the # for the substring
-							var newId = item.get('itemId'); //.substring(3,11); // have to have a unique id, get last one, which should be largest
+							var newId = item.get('itemid'); //.substring(3,11); // have to have a unique id, get last one, which should be largest
 							//console.log('newId is::' + newId);
 							rx = new RegExp(item.get('name').substring(0, ptr + 1), 'gi'); //grab "Uncanny X-Men #"
 							var bol = 0;
@@ -640,9 +640,9 @@ define('project2/models/cart', ['exports', 'ember-data'], function (exports, _em
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
     price: _emberData['default'].attr('string'),
-    catalogId: _emberData['default'].attr('string'),
-    itemId: _emberData['default'].attr('string'),
-    discountCode: _emberData['default'].attr('string'),
+    catalogid: _emberData['default'].attr('string'),
+    itemid: _emberData['default'].attr('string'),
+    discountcode: _emberData['default'].attr('string'),
     qty: _emberData['default'].attr('number'),
     //  total: DS.attr('string'),
     total: (function () {
@@ -671,13 +671,13 @@ define('project2/models/catalog', ['exports', 'ember-data'], function (exports, 
     name: _emberData['default'].attr('string'),
     price: _emberData['default'].attr('string'),
     catalogId: _emberData['default'].attr('string'),
-    itemId: _emberData['default'].attr('string'),
-    discountCode: _emberData['default'].attr('string'), //potential future action
-    categoryCode: _emberData['default'].attr('string'),
+    itemid: _emberData['default'].attr('string'),
+    discountcode: _emberData['default'].attr('string'), //potential future action
+    categorycode: _emberData['default'].attr('string'),
     // genreCode: DS.attr('string'),  //poetial future aciton
     //familyCode: DS.attr('string'),  //potential future action
-    orderDate: _emberData['default'].attr('string'),
-    sellDate: _emberData['default'].attr('string'),
+    orderdate: _emberData['default'].attr('string'),
+    selldate: _emberData['default'].attr('string'),
     page: _emberData['default'].attr('string'),
     qty: _emberData['default'].attr('number'),
     reoccuring: _emberData['default'].attr('boolean', { defaultValue: false }),
@@ -2074,7 +2074,7 @@ define("project2/templates/components/edit-cart", ["exports"], function (exports
           morphs[7] = dom.createElementMorph(element1);
           return morphs;
         },
-        statements: [["content", "catalogId", ["loc", [null, [6, 3], [6, 16]]]], ["content", "itemId", ["loc", [null, [9, 3], [9, 13]]]], ["content", "discountCode", ["loc", [null, [12, 3], [12, 19]]]], ["block", "bs-form", [], ["formLayout", "inline"], 0, null, ["loc", [null, [15, 3], [17, 15]]]], ["content", "name", ["loc", [null, [20, 3], [20, 11]]]], ["content", "price", ["loc", [null, [23, 4], [23, 13]]]], ["content", "total", ["loc", [null, [26, 7], [26, 16]]]], ["element", "action", ["removeItem"], [], ["loc", [null, [29, 49], [29, 72]]]]],
+        statements: [["content", "catalogid", ["loc", [null, [6, 3], [6, 16]]]], ["content", "itemid", ["loc", [null, [9, 3], [9, 13]]]], ["content", "discountcode", ["loc", [null, [12, 3], [12, 19]]]], ["block", "bs-form", [], ["formLayout", "inline"], 0, null, ["loc", [null, [15, 3], [17, 15]]]], ["content", "name", ["loc", [null, [20, 3], [20, 11]]]], ["content", "price", ["loc", [null, [23, 4], [23, 13]]]], ["content", "total", ["loc", [null, [26, 7], [26, 16]]]], ["element", "action", ["removeItem"], [], ["loc", [null, [29, 49], [29, 72]]]]],
         locals: [],
         templates: [child0]
       };
@@ -5823,7 +5823,7 @@ define("project2/templates/components/place-order", ["exports"], function (expor
           morphs[5] = dom.createElementMorph(element0);
           return morphs;
         },
-        statements: [["content", "name", ["loc", [null, [7, 3], [7, 11]]]], ["content", "itemId", ["loc", [null, [14, 3], [14, 13]]]], ["content", "orderDate", ["loc", [null, [17, 3], [17, 16]]]], ["content", "price", ["loc", [null, [20, 3], [20, 12]]]], ["block", "bs-form", [], ["formLayout", "inline", "action", "addItem"], 0, null, ["loc", [null, [23, 3], [25, 15]]]], ["element", "action", ["addItem"], [], ["loc", [null, [28, 49], [28, 69]]]]],
+        statements: [["content", "name", ["loc", [null, [7, 3], [7, 11]]]], ["content", "itemid", ["loc", [null, [14, 3], [14, 13]]]], ["content", "orderdate", ["loc", [null, [17, 3], [17, 16]]]], ["content", "price", ["loc", [null, [20, 3], [20, 12]]]], ["block", "bs-form", [], ["formLayout", "inline", "action", "addItem"], 0, null, ["loc", [null, [23, 3], [25, 15]]]], ["element", "action", ["addItem"], [], ["loc", [null, [28, 49], [28, 69]]]]],
         locals: [],
         templates: [child0]
       };
@@ -7241,7 +7241,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+46809a96","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
+  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+b47f43d8","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
 }
 
 /* jshint ignore:end */

@@ -7,7 +7,7 @@ from comicxpress_backend.api.models import *
 class catalogSerializer(serializers.ModelSerializer):
 	class Meta:
 		model= catalog
-		fields=('id', 'name', 'price','catalogId', 'itemId', 'discountCode', 'categoryCode', 'orderDate', 'sellDate', 'qty', 'page', 'reoccuring')
+		fields=('id', 'name', 'price','catalogid', 'itemid', 'discountcode', 'categorycode', 'orderdate', 'selldate', 'qty', 'page', 'reoccuring')
 
 class monthlyorderSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -22,4 +22,4 @@ class previewselectionsSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=User
-		fields = ('id', 'username', 'storeName', 'email')
+		fields = ('id', 'username', 'storename', 'email')

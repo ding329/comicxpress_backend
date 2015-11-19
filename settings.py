@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+#import comicxpress_backend.rest_framework_config
+
+import os 
 from localsettings import *
+
+#import comicxpress_backend.rest_framework_config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
