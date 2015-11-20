@@ -271,6 +271,7 @@ define('project2/controllers/monthlyorder', ['exports', 'ember'], function (expo
 				//			var reoccuring=this.get('monthlyorder');
 				this.get('monthlyorder').removeObject(item);
 				this.store.deleteRecord(item);
+				item['delete']();
 			},
 			submitReoccuring: function submitReoccuring() {
 				/* this is where we put the code to pass the new reoccuring data to the datbase*/
@@ -391,8 +392,7 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 							var monthlyOrder = monthlyController.get('monthlyorder');
 
 							var ptr = item.get('name').search("#"); //will need the position of the # for the substring
-							var newId = item.get('itemid'); //.substring(3,11); // have to have a unique id, get last one, which should be largest
-							//console.log('newId is::' + newId);
+
 							rx = new RegExp(item.get('name').substring(0, ptr + 1), 'gi'); //grab "Uncanny X-Men #"
 							var bol = 0;
 
@@ -407,10 +407,10 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 							if (bol == 0) //check if it is already in monthlyorder
 								{
 									var tmp2 = t.store.createRecord('monthlyorder', {
-										id: newId,
 										name: item.get('name').substring(0, ptr + 1),
 										qty: Math.floor(item.get('qty'))
 									});
+									tmp2.save();
 								} else {
 								bol.forEach(function (dup) {
 									dup.set('qty', Math.floor(item.get('qty')));
@@ -7241,7 +7241,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+b47f43d8","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
+  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+928f46c4","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
 }
 
 /* jshint ignore:end */

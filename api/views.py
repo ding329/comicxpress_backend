@@ -35,6 +35,12 @@ class catalogList(APIView):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+	def delete(self, request, pk, format=None):
+                item= self.get_object(pk)
+                item.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class monthlyorderList(APIView):
 	def get(self, request, format=None):
 		items= monthlyorder.objects.all()

@@ -2,7 +2,7 @@ from django.db import models
 """ do I need these two below """
 from django.contrib.auth.models import User
 from django.contrib import admin
-
+from comicxpress_backend.api.validators import *
 
 # Create your models here.
 
@@ -22,7 +22,7 @@ class catalog(models.Model):
 	"""
 this is the model for the catalog, holds most of the information for the application
 	""" 
-	name = models.CharField(max_length=50, blank=False)
+	name = models.CharField(max_length=75, blank=False)
 	price = models.CharField(max_length=10, blank=False)
 	catalogid = models.CharField(max_length=7, blank=False)
         itemid = models.CharField(max_length=11, blank=False, unique=True)
@@ -38,7 +38,7 @@ class catalogAdmin(admin.ModelAdmin):
 	list_display = ('name', 'price', 'itemid', 'qty', 'reoccuring')
 
 class monthlyorder(models.Model):
-	name = models.CharField(max_length=50, blank=False)
+	name = models.CharField(max_length=75, blank=False, validators=[removeJavascriptKeyword])
 	qty = models.IntegerField(default=0)
 
 class monthlyorderAdmin(admin.ModelAdmin):

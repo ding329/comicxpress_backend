@@ -83,7 +83,7 @@ define('project2/tests/controllers/order.jshint', ['exports'], function (exports
 
   module('JSHint - controllers');
   test('controllers/order.js should pass jshint', function () {
-    ok(false, 'controllers/order.js should pass jshint.\ncontrollers/order.js: line 86, col 26, Expected \'===\' and instead saw \'==\'.\ncontrollers/order.js: line 133, col 29, Expected \'===\' and instead saw \'==\'.\ncontrollers/order.js: line 177, col 32, Expected \'!==\' and instead saw \'!=\'.\ncontrollers/order.js: line 135, col 29, \'tmp2\' is defined but never used.\ncontrollers/order.js: line 192, col 17, \'previewSel\' is defined but never used.\n\n5 errors');
+    ok(false, 'controllers/order.js should pass jshint.\ncontrollers/order.js: line 86, col 26, Expected \'===\' and instead saw \'==\'.\ncontrollers/order.js: line 131, col 29, Expected \'===\' and instead saw \'==\'.\ncontrollers/order.js: line 175, col 32, Expected \'!==\' and instead saw \'!=\'.\ncontrollers/order.js: line 190, col 17, \'previewSel\' is defined but never used.\n\n4 errors');
   });
 });
 define('project2/tests/controllers/register.jshint', ['exports'], function (exports) {
