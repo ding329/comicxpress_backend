@@ -14,6 +14,48 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.permissions import *
+from comicxpress_backend.rest_framework_config import * 
+
+
+
+class Session(APIView):
+    permission_classes = (AllowAny,)
+    def form_response(self, isauthenticated, userid, username, error=""):
+        data = {
+            'isauthenticated': isauthenticated,
+            'userid': userid,
+            'username': username
+        }
+        if error:
+            data['message'] = error
+
+        return Response(data)
+
+    def get(self, request, *args, **kwargs):
+        # Get the current user
+        if request.user.is_authenticated():
+            return self.form_response(True, request.user.id, request.user.username)
+        return self.form_response(False, None, None)
+
+    def post(self, request, *args, **kwargs):
+        # Login
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return self.form_response(True, user.id, user.username)
+            return self.form_response(False, None, None, "Account is suspended")
+        return self.form_response(False, None, None, "Invalid username or password")
+
+    def delete(self, request, *args, **kwargs):
+        # Logout
+        logout(request)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 def home(request):
   	"""
@@ -36,7 +78,7 @@ class catalogList(APIView):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def delete(self, request, pk, format=None):
-                item= self.get_object(pk)
+                item= get_object_or_404(monthlyorder, pk=pk)
                 item.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -64,8 +106,10 @@ class monthlyorderDetail(APIView):
 	"""
 	Update or delete a single 
 	"""
+#	authenication_classes = (CsrfExemptSessionAuthentication,) 
+#	permission_classes = (AllowAny,)
 	def put(self, request, pk, format=None):
-		item = self.get_object(pk)
+		item= get_object_or_404(monthlyorder, pk=pk)
 		serializer = monthlyorderSerializer(item, data=request.data, context={'request': request})
 		if serializer.is_valid():
 			serializer.save()
@@ -73,7 +117,7 @@ class monthlyorderDetail(APIView):
         	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 	def delete(self, request, pk, format=None):
-		item= self.get_object(pk)
+		item= get_object_or_404(monthlyorder, pk=pk)
 		item.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
 

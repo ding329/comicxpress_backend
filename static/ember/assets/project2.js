@@ -187,27 +187,57 @@ define('project2/controllers/array', ['exports', 'ember'], function (exports, _e
   exports['default'] = _ember['default'].Controller;
 });
 define('project2/controllers/auth', ['exports', 'ember'], function (exports, _ember) {
-	exports['default'] = _ember['default'].Controller.extend({
+    exports['default'] = _ember['default'].Controller.extend({
 
-		username: '',
-		loggedIn: false,
-		errorMsg: '',
-		actions: {
-			login: function login() {
-				//do stuff to authenticate here
-				this.set('loggedIn', true);
-				this.transitionTo('monthlyorder');
-			},
-			logout: function logout() {
-				this.set('loggedIn', false);
-				this.transitionTo('auth');
-			},
-			goRegister: function goRegister() {
-				this.transitionTo('register');
-			}
-		}
+        username: '',
+        isLoggedIn: false,
+        errorMsg: '',
+        actions: {
+            login: function login() {
+                //do stuff to authenticate here
+                var username = this.get('username');
+                var password = this.get('password');
+                //    var remember = this.get('remember');
+                var data = {
+                    'username': username,
+                    'password': password };
+                var controllerObj = this;
+                _ember['default'].$.post('../api/session/', data, function (response) {
+                    if (response.isauthenticated) {
+                        //success
+                        console.log('Login POST Request to ../api/session/ was successful.');
+                        controllerObj.set('username', response.username);
+                        controllerObj.set('userid', response.userid);
+                        controllerObj.set('isLoggedIn', true);
+                    } else {
+                        //errors
+                        console.log('Login POST Request to ../api/session/ was successful.');
+                        controllerObj.set('errorMsg', response.message);
+                    }
+                });
+            },
+            logout: function logout() {
+                //   var remember = this.get('remember');;
+                var controllerObj = this;
+                _ember['default'].$.ajax({ url: '../api/session/', type: 'DELETE' }).then(function (response) {
+                    console.log('Logout success.');
+                    controllerObj.set('isLoggedIn', false);
+                    controllerObj.set('errorMsg', '');
+                    controllerObj.set('username', '');
+                    controllerObj.set('userid', '');
+                    //     if(!remember){
+                    //save to username and pass to local storage
 
-	});
+                    //   }
+                    controllerObj.transitionToRoute('auth');
+                });
+            },
+            goRegister: function goRegister() {
+                this.transitionTo('register');
+            }
+        }
+
+    });
 });
 define('project2/controllers/editcart', ['exports', 'ember', 'ember-validations'], function (exports, _ember, _emberValidations) {
 	exports['default'] = _ember['default'].Controller.extend(_emberValidations['default'], {
@@ -270,8 +300,10 @@ define('project2/controllers/monthlyorder', ['exports', 'ember'], function (expo
 			removeItem: function removeItem(item) {
 				//			var reoccuring=this.get('monthlyorder');
 				this.get('monthlyorder').removeObject(item);
-				this.store.deleteRecord(item);
-				item['delete']();
+				//	this.store.deleteRecord(item);
+				item.deleteRecord();
+				item.save();
+				//			item.delete();
 			},
 			submitReoccuring: function submitReoccuring() {
 				/* this is where we put the code to pass the new reoccuring data to the datbase*/
@@ -773,7 +805,7 @@ define('project2/routes/application', ['exports', 'ember'], function (exports, _
 			var auth = t.controllerFor('auth');
 			var previoustrans = t.get('currentTransition');
 			console.log('User attempting to access: /' + transition.targetName);
-			if (!auth.loggedIn) {
+			if (!auth.isLoggedIn) {
 				if (transition.targetName == 'register') {
 					//I dont know a better way to do this
 				} else if (transition.targetName !== 'auth') {
@@ -5663,7 +5695,7 @@ define("project2/templates/components/nav-bar", ["exports"], function (exports) 
         morphs[4] = dom.createMorphAt(element1, 3, 3);
         return morphs;
       },
-      statements: [["block", "link-to", ["order"], ["tagName", "li"], 0, null, ["loc", [null, [11, 8], [11, 79]]]], ["block", "link-to", ["editcart"], ["tagName", "li"], 1, null, ["loc", [null, [12, 6], [12, 87]]]], ["block", "link-to", ["monthlyorder"], ["tagName", "li"], 2, null, ["loc", [null, [13, 8], [13, 106]]]], ["block", "link-to", ["auth"], ["tagName", "li"], 3, null, ["loc", [null, [14, 8], [14, 76]]]], ["block", "if", [["get", "authController.loggedIn", ["loc", [null, [17, 12], [17, 35]]]]], [], 4, null, ["loc", [null, [17, 6], [21, 13]]]]],
+      statements: [["block", "link-to", ["order"], ["tagName", "li"], 0, null, ["loc", [null, [11, 8], [11, 79]]]], ["block", "link-to", ["editcart"], ["tagName", "li"], 1, null, ["loc", [null, [12, 6], [12, 87]]]], ["block", "link-to", ["monthlyorder"], ["tagName", "li"], 2, null, ["loc", [null, [13, 8], [13, 106]]]], ["block", "link-to", ["auth"], ["tagName", "li"], 3, null, ["loc", [null, [14, 8], [14, 76]]]], ["block", "if", [["get", "authController.isLoggedIn", ["loc", [null, [17, 12], [17, 37]]]]], [], 4, null, ["loc", [null, [17, 6], [21, 13]]]]],
       locals: [],
       templates: [child0, child1, child2, child3, child4]
     };

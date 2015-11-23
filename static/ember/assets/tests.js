@@ -59,7 +59,7 @@ define('project2/tests/controllers/auth.jshint', ['exports'], function (exports)
 
   module('JSHint - controllers');
   test('controllers/auth.js should pass jshint', function () {
-    ok(true, 'controllers/auth.js should pass jshint.');
+    ok(false, 'controllers/auth.js should pass jshint.\ncontrollers/auth.js: line 47, col 15, Missing semicolon.\ncontrollers/auth.js: line 36, col 22, \'response\' is defined but never used.\n\n2 errors');
   });
 });
 define('project2/tests/controllers/editcart.jshint', ['exports'], function (exports) {

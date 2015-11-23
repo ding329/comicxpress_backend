@@ -18,8 +18,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os 
 from localsettings import *
 
-#import comicxpress_backend.rest_framework_config
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -87,12 +85,17 @@ DATABASES = {
     }
 }
 
+import comicxpress_backend.rest_framework_config
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'comicxpress_backend.rest_framework_config.CsrfExemptSessionAuthentication',
+#        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
 
 STATICFILES_DIRS = (

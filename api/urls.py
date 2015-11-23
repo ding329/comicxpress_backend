@@ -14,10 +14,14 @@ router.register(r'users', views.userViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
 
+url(r'^session/', views.Session.as_view()),
+
     #class-based view approach
  #   url(r'^$', views.api_root), #needed if you use all class-based views and want them to show up in the landing page for the browsable api
  #   url(r'^orders/$', views.catalogList.as_view(), name='catalog-list'),
     url(r'^monthlyorders/$', views.monthlyorderList.as_view(), name='monthlyorder-list'),
+    url(r'^monthlyorders/(?P<pk>[0-9]+)/$', views.monthlyorderDetail.as_view(), name ='monthlyorder-detail' ),
     url(r'^catalogs/$', views.catalogList.as_view(), name='catalog-list'),
+    url(r'^catalogs/(?P<pk>[0-9]+)/$', views.catalogDetail.as_view(), name='catalog-detail'),
     url(r'^previewselections/$', views.previewselectionsList.as_view(), name='previewselections-list'),
 ]
