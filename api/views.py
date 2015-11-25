@@ -18,7 +18,25 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import *
 from comicxpress_backend.rest_framework_config import * 
 
+class Registration(APIView):
+    permission_classes = (AllowAny,)
+    def form_response(self, username, password, storename, email, error=""):
+	data= {
+	    'username': username,
+	    'password': password,
+	    'storename': storename,
+	    'email': email,
+	}
+	if error:
+	    data['message'] = error
+	
+	return Response(data)
 
+    def post(self, request, *args, **kwargs):
+	username = request.POST.get('username')
+	password = request.POST.get('password')
+	storename = request.POST.get('storename')
+	email = request.POST.get('email')
 
 class Session(APIView):
     permission_classes = (AllowAny,)

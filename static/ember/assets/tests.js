@@ -59,7 +59,7 @@ define('project2/tests/controllers/auth.jshint', ['exports'], function (exports)
 
   module('JSHint - controllers');
   test('controllers/auth.js should pass jshint', function () {
-    ok(false, 'controllers/auth.js should pass jshint.\ncontrollers/auth.js: line 47, col 15, Missing semicolon.\ncontrollers/auth.js: line 36, col 22, \'response\' is defined but never used.\n\n2 errors');
+    ok(false, 'controllers/auth.js should pass jshint.\ncontrollers/auth.js: line 36, col 22, \'response\' is defined but never used.\n\n1 error');
   });
 });
 define('project2/tests/controllers/editcart.jshint', ['exports'], function (exports) {
@@ -258,7 +258,7 @@ define('project2/tests/routes/application.jshint', ['exports'], function (export
 
   module('JSHint - routes');
   test('routes/application.js should pass jshint', function () {
-    ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 18, col 40, Expected \'===\' and instead saw \'==\'.\nroutes/application.js: line 35, col 43, \'model\' is defined but never used.\n\n2 errors');
+    ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 30, col 40, Expected \'===\' and instead saw \'==\'.\nroutes/application.js: line 47, col 43, \'model\' is defined but never used.\n\n2 errors');
   });
 });
 define('project2/tests/routes/auth.jshint', ['exports'], function (exports) {

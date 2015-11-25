@@ -22,6 +22,7 @@ url(r'^session/', views.Session.as_view()),
     url(r'^monthlyorders/$', views.monthlyorderList.as_view(), name='monthlyorder-list'),
     url(r'^monthlyorders/(?P<pk>[0-9]+)/$', views.monthlyorderDetail.as_view(), name ='monthlyorder-detail' ),
     url(r'^catalogs/$', views.catalogList.as_view(), name='catalog-list'),
-    url(r'^catalogs/(?P<pk>[0-9]+)/$', views.catalogDetail.as_view(), name='catalog-detail'),
+#    url(r'^catalogs/(?P<pk>[0-9]+)/$', views.catalogDetail.as_view(), name='catalog-detail'),
     url(r'^previewselections/$', views.previewselectionsList.as_view(), name='previewselections-list'),
+    url(r'^register/$', views.Registration.as_view()),
 ]
