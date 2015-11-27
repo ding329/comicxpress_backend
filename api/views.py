@@ -18,12 +18,13 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import *
 from comicxpress_backend.rest_framework_config import * 
 
+from django.core.exceptions import ValidationError
+
 class Registration(APIView):
     permission_classes = (AllowAny,)
     def form_response(self, username, password, storename, email, error=""):
 	data= {
 	    'username': username,
-	    'password': password,
 	    'storename': storename,
 	    'email': email,
 	}
@@ -37,6 +38,25 @@ class Registration(APIView):
 	password = request.POST.get('password')
 	storename = request.POST.get('storename')
 	email = request.POST.get('email')
+	
+	if len(password) <7:
+		raise ValidationError("Password must be at least 8 characters long")
+
+	if not any (char.isalpha() for char in password):
+		raise ValidationError("Must contain a letter")
+
+	if not any (char.isdigit() for char in password):
+                raise ValidationError("Must contain a digit")
+
+	if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+		raise ValidationError("Did not provide a proper email address")
+
+	newUser=User.objects.create_user(username, email, password)
+	newUser.first_name = storename
+	newUser.save()
+	self.form_response(username, storename, email)
+
+	
 
 class Session(APIView):
     permission_classes = (AllowAny,)

@@ -24,5 +24,5 @@ url(r'^session/', views.Session.as_view()),
     url(r'^catalogs/$', views.catalogList.as_view(), name='catalog-list'),
 #    url(r'^catalogs/(?P<pk>[0-9]+)/$', views.catalogDetail.as_view(), name='catalog-detail'),
     url(r'^previewselections/$', views.previewselectionsList.as_view(), name='previewselections-list'),
-    url(r'^register/$', views.Registration.as_view()),
+    url(r'^registration/$', views.Registration.as_view()),
 ]

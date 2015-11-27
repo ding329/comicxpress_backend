@@ -365,7 +365,7 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 			var rx2 = new RegExp(regexSearch, 'gi');
 
 			var entries = this.get('content').sortBy('itemid');
-			console.log("entries is::" + entries);
+			//		console.log("entries is::" + entries);
 			return entries.filter(function (entry) {
 				return entry.get('categorycode').match(rx) && entry.get('name').match(rx2);
 			});
@@ -387,11 +387,11 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 				/*
     We do not want duplicates in the cart.  We use the regexp to see if the name is in the cart.  The ^$ prevents X-Men from having 10 hits (exact title)
     */
-				var rx = new RegExp('^' + item.get('name') + '$', 'gi');
+				var rx = new RegExp('^' + item.get('itemId') + '$', 'gi');
 				//		var rx= new RegExp(item.get('id'), 'gi');
 				var rval = cart.filter(function (entry) //fi
 				{
-					return entry.get('name').match(rx);
+					return entry.get('itemId').match(rx);
 				});
 
 				//		console.log('Cart rx is::' + rx + "::rval is::" + rval);
@@ -413,7 +413,7 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 						} else {
 						//the itme is already in the cart, update the new qty
 						rval.forEach(function (dup) {
-							console.log('Dup::' + dup.get('name'));
+							//			console.log('Dup::' + dup.get('name'));
 							dup.set('qty', Math.floor(item.get('qty')));
 						});
 						//	rval.set('qty', item.get('qty'));
@@ -463,7 +463,7 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 					//			console.log('ine the else monthlyorder::' + monthlyorder)
 
 					monthlyorder.forEach(function (item) {
-						var rx = new RegExp(item.get('name') + '\\d+$', 'gi'); //prevents ordering of varients which have extra stuff after #\D+
+						var rx = new RegExp(item.get('name') + '\\d+(.*\))?$', 'gi'); //prevents ordering of varients which have extra stuff after #\D+
 						//				console.log('in the foreach rx is::' + rx);
 						var entry = catalog.filter(function (catalogItem) {
 							return catalogItem.get('name').match(rx);
@@ -501,11 +501,35 @@ define('project2/controllers/register', ['exports', 'ember', 'ember-validations'
 		username: null,
 		password: null,
 		storename: null,
+		errorMesg: null,
 		email: null,
+
+		isButtonDisabled: _ember['default'].computed('username', 'storename', 'password', 'email', function () {
+			return _ember['default'].isEmpty(this.get('username')) || _ember['default'].isEmpty(this.get('storename')) || _ember['default'].isEmpty(this.get('password')) || _ember['default'].isEmpty(this.get('email'));
+		}),
 
 		actions: {
 			register: function register() {
+
 				console.log('it worked');
+				var username = this.get('username');
+				var password = this.get('password');
+				var storename = this.get('storename');
+				var email = this.get('email');
+				var t = this;
+				t.set('errorMesg', '');
+
+				//    var remember = this.get('remember');
+				var data = {
+					'username': username,
+					'password': password,
+					'storename': storename,
+					'email': email
+				};
+				//    var controllerObj = this;
+				_ember['default'].$.post('../api/registration/', data, function (response) {
+					t.set('errorMesg', response.message);
+				});
 			}
 		}
 	});
@@ -532,20 +556,6 @@ define('project2/controllers/register', ['exports', 'ember', 'ember-validations'
 			presence: true,
 		},
 		'registration.profile': true,
-	}
-*/
-
-//	registration:null,
-
-/*	isButtonDisabled: Ember.computed('username', 'storeName', 'password', 'email',function(){
-		return Ember.isEmpty(this.get('username')) || Ember.isEmpty(this.get('storeName')) || Ember.isEmpty(this.get('password')) || Ember.isEmpty(this.get('email'));
-	}),
-*/
-
-/*
-	actions:
-	{
-		
 	}
 */
 define('project2/helpers/get', ['exports', 'ember', 'ember-get-helper/helpers/get', 'ember-get-helper/helpers/get-glimmer'], function (exports, _ember, _emberGetHelperHelpersGet, _emberGetHelperHelpersGetGlimmer) {
@@ -679,7 +689,7 @@ define('project2/models/cart', ['exports', 'ember-data'], function (exports, _em
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
     price: _emberData['default'].attr('string'),
-    catalogid: _emberData['default'].attr('string'),
+    catalogid: _emberData['default'].attr('number'),
     itemid: _emberData['default'].attr('string'),
     discountcode: _emberData['default'].attr('string'),
     qty: _emberData['default'].attr('number'),
@@ -709,7 +719,7 @@ define('project2/models/catalog', ['exports', 'ember-data'], function (exports, 
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
     price: _emberData['default'].attr('string'),
-    catalogId: _emberData['default'].attr('string'),
+    catalogid: _emberData['default'].attr('number'),
     itemid: _emberData['default'].attr('string'),
     discountcode: _emberData['default'].attr('string'), //potential future action
     categorycode: _emberData['default'].attr('string'),
@@ -6777,46 +6787,6 @@ define("project2/templates/order", ["exports"], function (exports) {
 });
 define("project2/templates/register", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "revision": "Ember@1.13.7",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 24,
-              "column": 0
-            },
-            "end": {
-              "line": 26,
-              "column": 1
-            }
-          },
-          "moduleName": "project2/templates/register.hbs"
-        },
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("				");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [["inline", "bs-input", [], ["type", "text", "size", 5, "value", ["subexpr", "@mut", [["get", "qty", ["loc", [null, [25, 40], [25, 43]]]]], [], []]], ["loc", [null, [25, 4], [25, 46]]]]],
-        locals: [],
-        templates: []
-      };
-    })();
     return {
       meta: {
         "revision": "Ember@1.13.7",
@@ -6827,8 +6797,8 @@ define("project2/templates/register", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 26,
-            "column": 13
+            "line": 25,
+            "column": 0
           }
         },
         "moduleName": "project2/templates/register.hbs"
@@ -6838,87 +6808,83 @@ define("project2/templates/register", ["exports"], function (exports) {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("\n\n	");
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("form");
-        dom.setAttribute(el1, "class", "form-inline");
+        var el1 = dom.createElement("h3");
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n		");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "form-group");
+        var el2 = dom.createTextNode("\n			");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n		");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "form-group");
-        var el3 = dom.createTextNode("\n			");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n		");
-        dom.appendChild(el2, el3);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n		");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "form-group");
+        var el2 = dom.createTextNode("\n			");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n		");
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "form-group");
-        var el3 = dom.createTextNode("\n			");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n		");
-        dom.appendChild(el2, el3);
+        var el2 = dom.createTextNode("\n		");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n		");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n		");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "form-group");
+        var el2 = dom.createTextNode("\n			");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "form-group");
-        var el3 = dom.createTextNode("\n			");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n		");
-        dom.appendChild(el2, el3);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n		");
+        var el2 = dom.createTextNode("\n		");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "form-group");
-        var el3 = dom.createTextNode("\n			");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n		");
-        dom.appendChild(el2, el3);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n		");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "form-group");
+        var el2 = dom.createTextNode("\n			");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n		");
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2, "type", "button");
-        dom.setAttribute(el2, "class", "btn btn-default");
-        var el3 = dom.createTextNode("Register Account");
-        dom.appendChild(el2, el3);
+        var el2 = dom.createTextNode("\n		");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n	");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n		");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("button");
+        dom.setAttribute(el1, "type", "button");
+        dom.setAttribute(el1, "class", "btn btn-default");
+        var el2 = dom.createTextNode("Register Account\n		");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [1]);
-        var element1 = dom.childAt(element0, [9]);
-        var morphs = new Array(6);
-        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 1, 1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 1, 1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 1, 1);
-        morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 1, 1);
-        morphs[4] = dom.createElementMorph(element1);
-        morphs[5] = dom.createMorphAt(fragment, 3, 3, contextualElement);
-        dom.insertBoundary(fragment, null);
+        var element0 = dom.childAt(fragment, [11]);
+        var morphs = new Array(7);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [5]), 1, 1);
+        morphs[3] = dom.createMorphAt(dom.childAt(fragment, [7]), 1, 1);
+        morphs[4] = dom.createMorphAt(dom.childAt(fragment, [9]), 1, 1);
+        morphs[5] = dom.createAttrMorph(element0, 'disabled');
+        morphs[6] = dom.createElementMorph(element0);
         return morphs;
       },
-      statements: [["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "username", ["loc", [null, [5, 38], [5, 46]]]]], [], []], "placeholder", "Username"], ["loc", [null, [5, 3], [5, 71]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "password", ["loc", [null, [9, 38], [9, 46]]]]], [], []], "placeholder", "Password", "type", "password"], ["loc", [null, [9, 3], [9, 87]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "storename", ["loc", [null, [13, 38], [13, 47]]]]], [], []], "placeholder", "Store Name"], ["loc", [null, [13, 3], [13, 74]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "email", ["loc", [null, [17, 38], [17, 43]]]]], [], []], "placeholder", "Email Address"], ["loc", [null, [17, 3], [17, 73]]]], ["element", "action", ["register"], [], ["loc", [null, [20, 48], [20, 69]]]], ["block", "bs-form", [], ["formLayout", "inline", "action", "addItem"], 0, null, ["loc", [null, [24, 0], [26, 13]]]]],
+      statements: [["content", "errorMesg", ["loc", [null, [2, 4], [2, 17]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "username", ["loc", [null, [4, 38], [4, 46]]]]], [], []], "placeholder", "Username"], ["loc", [null, [4, 3], [4, 71]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "password", ["loc", [null, [8, 38], [8, 46]]]]], [], []], "placeholder", "Password", "type", "password"], ["loc", [null, [8, 3], [8, 87]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "storename", ["loc", [null, [12, 38], [12, 47]]]]], [], []], "placeholder", "Store Name"], ["loc", [null, [12, 3], [12, 74]]]], ["inline", "input", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "email", ["loc", [null, [16, 38], [16, 43]]]]], [], []], "placeholder", "Email Address"], ["loc", [null, [16, 3], [16, 73]]]], ["attribute", "disabled", ["get", "isButtonDisabled", ["loc", [null, [20, 14], [20, 30]]]]], ["element", "action", ["register"], [], ["loc", [null, [21, 3], [21, 24]]]]],
       locals: [],
-      templates: [child0]
+      templates: []
     };
   })());
 });
@@ -7328,7 +7294,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+c95e081f","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
+  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+a079747c","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
 }
 
 /* jshint ignore:end */
