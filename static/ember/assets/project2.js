@@ -463,7 +463,7 @@ define('project2/controllers/order', ['exports', 'ember'], function (exports, _e
 					//			console.log('ine the else monthlyorder::' + monthlyorder)
 
 					monthlyorder.forEach(function (item) {
-						var rx = new RegExp(item.get('name') + '\\d+(.*\))?$', 'gi'); //prevents ordering of varients which have extra stuff after #\D+
+						var rx = new RegExp(item.get('name') + '\\d+(\\s+\\(OF\\s+\\))?$', 'gi'); //prevents ordering of varients which have extra stuff after #\D+
 						//				console.log('in the foreach rx is::' + rx);
 						var entry = catalog.filter(function (catalogItem) {
 							return catalogItem.get('name').match(rx);
@@ -7294,7 +7294,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+a079747c","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
+  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+c4a7eb9c","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
 }
 
 /* jshint ignore:end */

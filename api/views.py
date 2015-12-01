@@ -20,9 +20,11 @@ from comicxpress_backend.rest_framework_config import *
 
 from django.core.exceptions import ValidationError
 
+import re
+
 class Registration(APIView):
     permission_classes = (AllowAny,)
-    def form_response(self, username, password, storename, email, error=""):
+    def form_response(self, username, storename, email, error=""):
 	data= {
 	    'username': username,
 	    'storename': storename,
@@ -40,21 +42,40 @@ class Registration(APIView):
 	email = request.POST.get('email')
 	
 	if len(password) <7:
-		raise ValidationError("Password must be at least 8 characters long")
+	#	raise ValidationError("Password must be at least 8 characters long")
+		return self.form_response(None, None, None, "Password must be at least 8 characters long")		
 
 	if not any (char.isalpha() for char in password):
-		raise ValidationError("Must contain a letter")
+#		raise ValidationError("Password Must contain a letter")
+		return self.form_response(None, None, None, "Password Must contain a letter")
 
 	if not any (char.isdigit() for char in password):
-                raise ValidationError("Must contain a digit")
+#                raise ValidationError("Password must contain a digit")
+		return self.form_response(None, None, None, "Password must contain a digit")
 
-	if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-		raise ValidationError("Did not provide a proper email address")
+	if not re.match(r'.*[A-Z]', password):
+#		raise ValidationError("Password must contain a capital letter")
+		return self.form_response(None, None, None, "Password must contain a capital letter")
+
+	if not re.match(r'.*[a-z]', password):
+#                raise ValidationError("Password must contain a lowercase letter")
+		return self.form_response(None, None, None, "Password must contain a lowercase letter")
+
+	if not re.match(r'.*[!@#$%^&*()]', password):
+#                raise ValidationError("Password must contain a special character")
+		return self.form_response(None, None, None, "Password must contain a special character")
+
+	if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+#		raise ValidationError("Did not provide a proper email address")
+		return self.form_response(None, None, None, "Did not provide a proper email address")
+	
+	if User.objects.get(username=username):
+		return self.form_response(None, None, None, "User name is already taken, please pick another")
 
 	newUser=User.objects.create_user(username, email, password)
 	newUser.first_name = storename
 	newUser.save()
-	self.form_response(username, storename, email)
+	self.form_response(username, storename, email, "Successfully Registered")
 
 	
 
