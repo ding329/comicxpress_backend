@@ -45,13 +45,13 @@ this is the model for the catalog, holds most of the information for the applica
 		cleaner.frames = True
 		cleaner.allow_tags = []
 		cleaner.remove_tags = ['p', 'div', 'a']
-		self.name= cleaner.clean_html(self.name)
-		self.price = cleaner.clean_html(self.price)
-		self.discountcode = cleaner.clean_html(self.discountcode)
-		self.categorycode= cleaner.clean_html(self.categorycode)
-		self.orderdate= cleaner.clean_html(self.orderdate)
-		self.selldate= cleaner.clean_html(self.selldate)
-		self.page= cleaner.clean_html(self.page)		
+		self.name= (lxml.html.document_fromstring(cleaner.clean_html(self.name))).text_content()
+		self.price = (lxml.html.document_fromstring(cleaner.clean_html(self.price))).text_content()
+		self.discountcode = (lxml.html.document_fromstring(cleaner.clean_html(self.discountcode))).text_content()
+		self.categorycode= (lxml.html.document_fromstring(cleaner.clean_html(self.categorycode))).text_content()
+		self.orderdate= (lxml.html.document_fromstring(cleaner.clean_html(self.orderdate))).text_content()
+		self.selldate= (lxml.html.document_fromstring(cleaner.clean_html(self.selldate))).text_content()
+		self.page= (lxml.html.document_fromstring(cleaner.clean_html(self.page))).text_content()		
 
 
 class catalogAdmin(admin.ModelAdmin):
@@ -66,9 +66,7 @@ class monthlyorder(models.Model):
                 cleaner.javascript = True
                 cleaner.scripts = True
                 cleaner.frames = True
-		cleaner.remove_tags = ['p', 'div', 'a']
-		self.name= cleaner.clean_html(self.name)  #lxml.html.fromstring(self.name) ) 
-		
+		self.name= (lxml.html.document_fromstring(cleaner.clean_html(self.name))).text_content()  #lxml.html.fromstring(self.name) ) 
 
 class monthlyorderAdmin(admin.ModelAdmin):
 	list_display = ('name', 'qty')

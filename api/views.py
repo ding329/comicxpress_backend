@@ -40,7 +40,7 @@ class Registration(APIView):
 	password = request.POST.get('password')
 	storename = request.POST.get('storename')
 	email = request.POST.get('email')
-	
+
 	if len(password) <7:
 	#	raise ValidationError("Password must be at least 8 characters long")
 		return self.form_response(None, None, None, "Password must be at least 8 characters long")		
@@ -69,13 +69,13 @@ class Registration(APIView):
 #		raise ValidationError("Did not provide a proper email address")
 		return self.form_response(None, None, None, "Did not provide a proper email address")
 	
-	if User.objects.get(username=username):
-		return self.form_response(None, None, None, "User name is already taken, please pick another")
+#	if User.objects.get(username=username):
+#		return self.form_response(None, None, None, "User name is already taken, please pick another")
 
 	newUser=User.objects.create_user(username, email, password)
 	newUser.first_name = storename
 	newUser.save()
-	self.form_response(username, storename, email, "Successfully Registered")
+	return self.form_response(username, storename, email, "Successfully Registered")
 
 	
 

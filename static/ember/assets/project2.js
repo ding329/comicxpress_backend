@@ -510,14 +510,14 @@ define('project2/controllers/register', ['exports', 'ember', 'ember-validations'
 
 		actions: {
 			register: function register() {
-
-				console.log('it worked');
 				var username = this.get('username');
 				var password = this.get('password');
 				var storename = this.get('storename');
 				var email = this.get('email');
 				var t = this;
 				t.set('errorMesg', '');
+
+				console.log('it worked::' + username);
 
 				//    var remember = this.get('remember');
 				var data = {
@@ -527,6 +527,7 @@ define('project2/controllers/register', ['exports', 'ember', 'ember-validations'
 					'email': email
 				};
 				//    var controllerObj = this;
+				console.log('before the post');
 				_ember['default'].$.post('../api/registration/', data, function (response) {
 					t.set('errorMesg', response.message);
 				});
@@ -7294,7 +7295,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+c4a7eb9c","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
+  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+42fd6226","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
 }
 
 /* jshint ignore:end */
