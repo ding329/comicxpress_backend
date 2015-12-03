@@ -35,9 +35,13 @@ class catalogSerializer(serializers.ModelSerializer):
 		return data
 
 class monthlyorderSerializer(serializers.ModelSerializer):
+	author = serializers.SlugRelatedField(slug_field='username', queryset=User.objects.all())
+
+	print author
+
 	class Meta:
 		model = monthlyorder
-		fields=('id', 'name', 'qty',)
+		fields=('id', 'name', 'qty', 'author',)
 
 	def validate(self, data):
                 cleaner= Cleaner()
@@ -47,8 +51,8 @@ class monthlyorderSerializer(serializers.ModelSerializer):
 		cleaner.remove_tags = ['p', 'div', 'a']
 		data['name']= (lxml.html.document_fromstring(cleaner.clean_html(data['name']))).text_content()
 
-		if data[qty] < 0:
-			data[qty]=0
+		if data['qty'] < 0:
+			data['qty']=0
 		return data
 
 
@@ -68,9 +72,9 @@ class UserSerializer(serializers.ModelSerializer):
                 cleaner.scripts = True
                 cleaner.frames = True
 		cleaner.remove_tags = ['p', 'div', 'a']
-#		data['username']= (lxml.html.document_fromstring(cleaner.clean_html(data['username']))).text_content()
-#		data['storename']= (lxml.html.document_fromstring(cleaner.clean_html(data['storename']))).text_content()
-#		data['email']= (lxml.html.document_fromstring(cleaner.clean_html(data['email']))).text_content()
+		data['username']= (lxml.html.document_fromstring(cleaner.clean_html(data['username']))).text_content()
+		data['storename']= (lxml.html.document_fromstring(cleaner.clean_html(data['storename']))).text_content()
+		data['email']= (lxml.html.document_fromstring(cleaner.clean_html(data['email']))).text_content()
 
 #		data['username']=  cleaner.clean_html(data['username'])
  #               data['storename']= cleaner.clean_html(data['storename'])

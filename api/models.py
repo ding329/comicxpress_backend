@@ -60,6 +60,7 @@ class catalogAdmin(admin.ModelAdmin):
 class monthlyorder(models.Model):
 	name = models.CharField(max_length=75, blank=False,) #validators=[removeJavascriptKeyword])
 	qty = models.IntegerField(default=0, validators=[validateInterger])
+	author = models.ForeignKey(User)
 
 	def clean(self):
                 cleaner= Cleaner()
