@@ -35,13 +35,9 @@ class catalogSerializer(serializers.ModelSerializer):
 		return data
 
 class monthlyorderSerializer(serializers.ModelSerializer):
-	author = serializers.SlugRelatedField(slug_field='username', queryset=User.objects.all())
-
-	print author
-
 	class Meta:
 		model = monthlyorder
-		fields=('id', 'name', 'qty', 'author',)
+		fields=('id', 'name', 'qty',)
 
 	def validate(self, data):
                 cleaner= Cleaner()

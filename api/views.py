@@ -18,8 +18,6 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import *
 from comicxpress_backend.rest_framework_config import * 
 
-from axes.decorators import watch_login
-
 from django.core.exceptions import ValidationError
 
 import re
@@ -80,7 +78,6 @@ class Registration(APIView):
 	newUser.save()
 	return self.form_response(username, storename, email, "Successfully Registered")
 
-#@watch_login	
 class Session(APIView):
     permission_classes = (AllowAny,)
     def form_response(self, isauthenticated, userid, username, error=""):
@@ -100,7 +97,6 @@ class Session(APIView):
             return self.form_response(True, request.user.id, request.user.username)
         return self.form_response(False, None, None)
 
-    @watch_login
     def post(self, request, *args, **kwargs):
         # Login
         username = request.POST.get('username')
@@ -154,7 +150,7 @@ class monthlyorderList(APIView):
 	def post(self, request, format=None):
 		serializer = monthlyorderSerializer(data=request.data, context={'request': request})
 		if serializer.is_valid():
-			serializer.save()
+			serializer.save(author=request.user)
 			return Response(serializer.data, status=status.HTTP_201_CREATED) 
 	        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 

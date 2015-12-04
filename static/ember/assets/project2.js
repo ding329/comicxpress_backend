@@ -750,8 +750,7 @@ define('project2/models/monthlyorder', ['exports', 'ember-data'], function (expo
 
   exports['default'] = _emberData['default'].Model.extend({
     name: _emberData['default'].attr('string'),
-    qty: _emberData['default'].attr('number'),
-    author: _emberData['default'].attr('string')
+    qty: _emberData['default'].attr('number')
   });
 });
 define('project2/models/previewselection', ['exports', 'ember-data'], function (exports, _emberData) {
@@ -7301,7 +7300,7 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+8aba3f60","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
+  require("project2/app")["default"].create({"API_HOST":"http://localhost:8081","name":"project2","version":"0.0.0+829dcb95","API_NAMESPACE":"api","API_ADD_TRAILING_SLASHES":true});
 }
 
 /* jshint ignore:end */
