@@ -1,5 +1,7 @@
 from django.contrib import admin
-from comicxpress_backend.api.models import *
+#from comicxpress_backend.api.models import *
+from api.models import *
+
 
 admin.site.register(catalog, catalogAdmin)
 admin.site.register(monthlyorder, monthlyorderAdmin)

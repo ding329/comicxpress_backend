@@ -2,13 +2,15 @@ from django.conf.urls import include, url
 
 #Django Rest Framework
 from rest_framework import routers
-from comicxpress_backend.api import views
+#from comicxpress_backend.api import views
+from api import views
+
+
 from rest_framework.urlpatterns import format_suffix_patterns
 from axes.decorators import watch_login
 
 #REST API routes
 router = routers.DefaultRouter()
-#router.register(r'forumposts', views.ForumpostViewSet) #use this for viewset approach
 router.register(r'users', views.userViewSet)
 
 #REST API

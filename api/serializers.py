@@ -2,7 +2,9 @@ from rest_framework import serializers
 
 #load django and webapp models
 from django.contrib.auth.models import *
-from comicxpress_backend.api.models import *
+#from comicxpress_backend.api.models import *
+from api.models import *
+
 
 import lxml
 from lxml.html.clean import Cleaner

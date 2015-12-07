@@ -5,18 +5,24 @@ from django.shortcuts import *
 # Import models
 from django.db import models
 from django.contrib.auth.models import *
-from comicxpress_backend.api.models import *
+#from comicxpress_backend.api.models import *
+from api.models import *
+
 
 #REST API
+#from comicxpress_backend.rest_framework import viewsets
+#from comicxpress_backend.api.serializers import *
 from rest_framework import viewsets
-from comicxpress_backend.api.serializers import *
+from api.serializers import *
+
+
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import *
-from comicxpress_backend.rest_framework_config import * 
+from rest_framework_config import * 
 
 from django.core.exceptions import ValidationError
 

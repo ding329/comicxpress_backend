@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'comicxpress_backend.api',
+#    'comicxpress_backend.api',
+    'api',
     'rest_framework',
     'axes',
 )
@@ -65,7 +66,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['static/ember/'],
+        'DIRS': ['/var/www/comicxpress_backend/static/ember/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,7 +91,7 @@ DATABASES = {
     }
 }
 
-import comicxpress_backend.rest_framework_config
+import rest_framework_config
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -98,8 +99,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'comicxpress_backend.rest_framework_config.CsrfExemptSessionAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+       'rest_framework_config.CsrfExemptSessionAuthentication',
+       'rest_framework.authentication.SessionAuthentication',
     ],
 }
 

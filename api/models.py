@@ -2,7 +2,9 @@ from django.db import models
 """ do I need these two below """
 from django.contrib.auth.models import User
 from django.contrib import admin
-from comicxpress_backend.api.validators import *
+#from comicxpress_backend.api.validators import *
+from api.validators import *
+
 
 import lxml
 from lxml.html.clean import Cleaner
